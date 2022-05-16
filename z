@@ -1,5 +1,9 @@
 #!/bin/bash
 
+############################################
+#### WAITING FOR GO VERSION FROM RWXROB ####
+############################################
+
 IFS= read -rd '' USAGE <<EOF
 
 Usage:

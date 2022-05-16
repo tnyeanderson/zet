@@ -1,0 +1,178 @@
+#!/bin/bash
+
+IFS= read -rd '' USAGE <<EOF
+
+Usage:
+
+    ${0} h|help              : Show this help screen
+    ${0} c|create TITLE...   : Create a new zettel
+    ${0} e|edit   QUERY...   : Search for a zettel and edit it
+    ${0} p|print  QUERY...   : Search for a zettel and print it
+    ${0} s|search QUERY...   : Print IDs and titles of zettels matching QUERY
+
+EOF
+
+COMMAND=$1
+shift
+
+ZET_LIST=()
+SELECTED_ZET=''
+
+show_usage() {
+	echo "$USAGE"
+}
+
+new_zid() {
+	date '+%Y%m%d%H%M%S'
+}
+
+
+cmd_create() {
+	TITLE="$@"
+	create_zettel "${TITLE^}"
+}
+
+cmd_search() {
+	parse_zet_list < <(search_zettel "$@")
+	printf '%s\n' "${ZET_LIST[@]}"
+}
+
+cmd_edit() {
+	parse_zet_list < <(search_zettel "$@") 
+	select_zet
+	edit_zet "$SELECTED_ZET"
+}
+
+cmd_print() {
+	parse_zet_list < <(search_zettel "$@") 
+	select_zet
+	print_zettel "$SELECTED_ZET"
+	echo
+	echo "Zettel: $SELECTED_ZET"
+}
+
+create_zettel() {
+	TITLE="$1"
+	ZID=$(new_zid)
+	README="$ZID/README.md"
+	mkdir -p "$ZID"
+	echo "# $TITLE" > "$README"
+	edit_file "$README"
+	on_save "$ZID" "CREATED"
+}
+
+on_save() {
+	ZID=$1
+	MESSAGE_PREFIX=$2
+	if [[ -s "$ZID/README.md" ]]; then
+		TITLE=$(get_title "$ZID")
+		commit_zettel "$ZID" "$MESSAGE_PREFIX $TITLE"
+	else
+		echo "File empty. Deleting empty zettel: $ZID"
+		delete_zettel "$ZID"
+	fi
+}
+
+delete_zettel() {
+	[[ -d "$ZID" ]] && rm -rf "$ZID"
+	commit_zettel "$ZID" "DELETED $ZID"
+}
+
+search_zettel() {
+	QUERY=$(sed -e 's/\s\+/|/g' <<<$@)
+	git grep -i --name-only -E "$QUERY" | grep -o -E '[0-9]{14}'
+}
+
+parse_zet_list() {
+	ZET_LIST=()
+	while IFS= read -r ZID; do
+		TITLE=$(get_title "$ZID")
+		ZET_LIST+=("$ZID $TITLE")
+	done
+}
+
+select_zet() {
+	if [[ "${#ZET_LIST[@]}" == 1 ]]; then
+		SELECTED_ZET=$(awk '{ print $1 }' <<<"${ZET_LIST[0]}")
+		return
+	fi
+	PS3='Select a zet: '
+	select ZET in "${ZET_LIST[@]}"; do
+		SELECTED_ZET=$(awk '{ print $1 }' <<<"$ZET")
+		break
+	done
+}
+
+get_title_from_file() {
+	head -n 1 "$1" | sed -e 's/^# //'
+}
+
+get_title() {
+	ZID=$1
+	get_title_from_file "$ZID/README.md"
+}
+
+commit_zettel() {
+	ZID=$1
+	MESSAGE=$2
+	if [[ -z "$MESSAGE" ]]; then
+		head -n 1 <"$ZID/README.md" | sed -e 's/^# //'
+	fi
+	git add "$ZID"
+	git commit -m "$MESSAGE"
+}
+
+print_zettel() {
+	ZID=$1
+	cat "$ZID/README.md"
+}
+
+edit_zet() {
+	ZID=$1
+	README="$ZID/README.md"
+	if [[ -f "$README" ]]; then
+		edit_file "$README"
+		on_save "$ZID" "EDITED"
+	else
+		echo "File does not exist: $README" >&2
+		exit 1
+	fi
+}
+
+edit_file() {
+	is_vscode_terminal && edit_in_vscode "$1" || edit_in_vim "$1"
+}
+
+is_vscode_terminal() {
+	grep VSCODE <(env) &>/dev/null
+}
+
+edit_in_vscode() {
+	code -w $1
+}
+
+edit_in_vim() {
+	vim $1
+}
+
+case "$COMMAND" in
+	c|create)
+		cmd_create "$@"
+		;;
+	s|search)
+		cmd_search "$@"
+		;;
+	e|edit)
+		cmd_edit "$@"
+		;;
+	p|print)
+		cmd_print "$@"
+		;;
+	h|help)
+		show_usage
+		;;
+	*)
+		echo 'ERROR: Command not found'
+		show_usage
+		;;
+esac

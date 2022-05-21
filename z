@@ -33,7 +33,7 @@ new_zid() {
 
 
 cmd_create() {
-	TITLE="$@"
+	TITLE="$*"
 	create_zettel "${TITLE^}"
 }
 
@@ -90,7 +90,7 @@ delete_zettel() {
 }
 
 search_zettel() {
-	QUERY=$(sed -e 's/\s\+/|/g' <<<$@)
+	QUERY=${*// /\|}
 	git grep -i --name-only -E "$QUERY" | grep -o -E '[0-9]{14}'
 }
 
@@ -156,7 +156,11 @@ edit_zet() {
 }
 
 edit_file() {
-	is_vscode_terminal && edit_in_vscode "$1" || edit_in_vim "$1"
+	if is_vscode_terminal; then
+		edit_in_vscode "$1"
+	else
+		edit_in_vim "$1"
+	fi
 }
 
 is_vscode_terminal() {
@@ -164,11 +168,11 @@ is_vscode_terminal() {
 }
 
 edit_in_vscode() {
-	code -w $1
+	code -w "$1"
 }
 
 edit_in_vim() {
-	vim $1
+	vim "$1"
 }
 
 case "$COMMAND" in

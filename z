@@ -31,7 +31,6 @@ new_zid() {
 	date '+%Y%m%d%H%M%S'
 }
 
-
 cmd_create() {
 	TITLE="$*"
 	create_zettel "${TITLE^}"
@@ -43,13 +42,13 @@ cmd_search() {
 }
 
 cmd_edit() {
-	parse_zet_list < <(search_zettel "$@") 
+	parse_zet_list < <(search_zettel "$@")
 	select_zet
 	edit_zet "$SELECTED_ZET"
 }
 
 cmd_print() {
-	parse_zet_list < <(search_zettel "$@") 
+	parse_zet_list < <(search_zettel "$@")
 	select_zet
 	print_zettel "$SELECTED_ZET"
 	echo
@@ -57,7 +56,7 @@ cmd_print() {
 }
 
 cmd_view() {
-	parse_zet_list < <(search_zettel "$@") 
+	parse_zet_list < <(search_zettel "$@")
 	select_zet
 	view_zettel "$SELECTED_ZET"
 }
@@ -67,7 +66,7 @@ create_zettel() {
 	ZID=$(new_zid)
 	README="$ZID/README.md"
 	mkdir -p "$ZID"
-	echo "# $TITLE" > "$README"
+	echo "# $TITLE" >"$README"
 	edit_file "$README"
 	on_save "$ZID" "CREATED"
 }
@@ -176,26 +175,26 @@ edit_in_vim() {
 }
 
 case "$COMMAND" in
-	c|create)
-		cmd_create "$@"
-		;;
-	s|search)
-		cmd_search "$@"
-		;;
-	e|edit)
-		cmd_edit "$@"
-		;;
-	p|print)
-		cmd_print "$@"
-		;;
-  v|view)
-    cmd_view "$@"
-    ;;
-	h|help)
-		show_usage
-		;;
-	*)
-		echo 'ERROR: Command not found'
-		show_usage
-		;;
+c | create)
+	cmd_create "$@"
+	;;
+s | search)
+	cmd_search "$@"
+	;;
+e | edit)
+	cmd_edit "$@"
+	;;
+p | print)
+	cmd_print "$@"
+	;;
+v | view)
+	cmd_view "$@"
+	;;
+h | help)
+	show_usage
+	;;
+*)
+	echo 'ERROR: Command not found'
+	show_usage
+	;;
 esac

@@ -13,6 +13,7 @@ Usage:
     ${0} e|edit   QUERY...   : Search for a zettel and edit it
     ${0} p|print  QUERY...   : Search for a zettel and print it
     ${0} s|search QUERY...   : Print IDs and titles of zettels matching QUERY
+    ${0} s|view   QUERY...   : Search for a zettel and view it
 
 EOF
 
@@ -53,6 +54,12 @@ cmd_print() {
 	print_zettel "$SELECTED_ZET"
 	echo
 	echo "Zettel: $SELECTED_ZET"
+}
+
+cmd_view() {
+	parse_zet_list < <(search_zettel "$@") 
+	select_zet
+	view_zettel "$SELECTED_ZET"
 }
 
 create_zettel() {
@@ -131,6 +138,11 @@ print_zettel() {
 	cat "$ZID/README.md"
 }
 
+view_zettel() {
+	ZID=$1
+	view "$ZID/README.md"
+}
+
 edit_zet() {
 	ZID=$1
 	README="$ZID/README.md"
@@ -172,6 +184,9 @@ case "$COMMAND" in
 	p|print)
 		cmd_print "$@"
 		;;
+  v|view)
+    cmd_view "$@"
+    ;;
 	h|help)
 		show_usage
 		;;

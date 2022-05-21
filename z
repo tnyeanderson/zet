@@ -89,7 +89,8 @@ delete_zettel() {
 }
 
 search_zettel() {
-	QUERY=${*// /\|}
+	# shellcheck disable=SC2001
+	QUERY=$(sed -e 's/\s\+/|/g' <<<"$*")
 	git grep -i --name-only -E "$QUERY" | grep -o -E '[0-9]{14}'
 }
 

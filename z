@@ -103,6 +103,10 @@ parse_zet_list() {
 }
 
 select_zet() {
+	if [[ "${#ZET_LIST[@]}" == 0 ]]; then
+		echo "No zettels to select"
+		exit 1
+	fi
 	if [[ "${#ZET_LIST[@]}" == 1 ]]; then
 		SELECTED_ZET=$(awk '{ print $1 }' <<<"${ZET_LIST[0]}")
 		return
@@ -112,6 +116,10 @@ select_zet() {
 		SELECTED_ZET=$(awk '{ print $1 }' <<<"$ZET")
 		break
 	done
+	if [[ -z "$SELECTED_ZET" ]]; then
+		echo "No zet selected"
+		exit 1
+	fi
 }
 
 get_title_from_file() {

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -165,13 +164,23 @@ func OnSave(zid string) {
 	}
 	if len(contents) == 0 {
 		// File is empty
-		fmt.Println("empty file!")
-		err := os.Remove(zid)
-		if err != nil {
-			log.Fatal(err)
-		}
+		fmt.Println("Empty file!")
+		DeleteZettel(zid)
+	}
+	//CommitZettel(zid string, action string)
+}
+
+func DeleteZettel(zid string) {
+	err := os.RemoveAll(zid)
+	if err != nil {
+		fmt.Println(err)
 	}
 }
+
+//func CommitZettel(zid string, message string) {
+//				runInteractive("git", "add", zid)
+//				runInteractive("git", "commit", "-m", message)
+//}
 
 func RunZetCommand(command string, args []string) {
 	switch command {

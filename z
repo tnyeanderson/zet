@@ -61,6 +61,12 @@ cmd_view() {
 	view_zettel "$SELECTED_ZET"
 }
 
+cmd_url() {
+	parse_zet_list < <(search_zettel "$@")
+	select_zet
+	echo "https://$(get_repo_url)/tree/main/$SELECTED_ZET"
+}
+
 create_zettel() {
 	TITLE="$1"
 	ZID=$(new_zid)
@@ -89,6 +95,9 @@ delete_zettel() {
 }
 
 search_zettel() {
+	if [[ "$*" == 'latest' ]]; then
+		get_latest_zettel
+	fi
 	# shellcheck disable=SC2001
 	QUERY=$(sed -e 's/\s\+/|/g' <<<"$*")
 	git grep -i --name-only -E "$QUERY" | grep -o -E '[0-9]{14}'
@@ -100,6 +109,10 @@ parse_zet_list() {
 		TITLE=$(get_title "$ZID")
 		ZET_LIST+=("$ZID $TITLE")
 	done
+}
+
+get_latest_zettel() {
+	find . -maxdepth 1 -type d -name '[0-9]*' -printf '%f\n' | sort -r | head -n 1
 }
 
 select_zet() {
@@ -183,6 +196,10 @@ edit_in_vim() {
 	vim "$1"
 }
 
+get_repo_url() {
+	grep -o 'github\.com.*\.git' <.git/config | tr : / | sed 's/\.git$//'
+}
+
 case "$COMMAND" in
 c | create)
 	cmd_create "$@"
@@ -195,6 +212,9 @@ e | edit)
 	;;
 p | print)
 	cmd_print "$@"
+	;;
+u | url)
+	cmd_url "$@"
 	;;
 v | view)
 	cmd_view "$@"

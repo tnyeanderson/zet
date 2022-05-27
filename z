@@ -20,6 +20,7 @@ EOF
 COMMAND=$1
 shift
 
+ZETDIR="${ZETDIR:-.}"
 ZET_LIST=()
 SELECTED_ZET=''
 
@@ -200,30 +201,34 @@ get_repo_url() {
 	grep -o 'github\.com.*\.git' <.git/config | tr : / | sed 's/\.git$//'
 }
 
-case "$COMMAND" in
-c | create)
-	cmd_create "$@"
-	;;
-s | search)
-	cmd_search "$@"
-	;;
-e | edit)
-	cmd_edit "$@"
-	;;
-p | print)
-	cmd_print "$@"
-	;;
-u | url)
-	cmd_url "$@"
-	;;
-v | view)
-	cmd_view "$@"
-	;;
-h | help)
-	show_usage
-	;;
-*)
-	echo 'ERROR: Command not found'
-	show_usage
-	;;
-esac
+main() {
+	case "$COMMAND" in
+	c | create)
+		cmd_create "$@"
+		;;
+	s | search)
+		cmd_search "$@"
+		;;
+	e | edit)
+		cmd_edit "$@"
+		;;
+	p | print)
+		cmd_print "$@"
+		;;
+	u | url)
+		cmd_url "$@"
+		;;
+	v | view)
+		cmd_view "$@"
+		;;
+	h | help)
+		show_usage
+		;;
+	*)
+		echo 'ERROR: Command not found'
+		show_usage
+		;;
+	esac
+}
+
+(cd "$ZETDIR" && main "$@")

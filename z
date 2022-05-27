@@ -101,7 +101,7 @@ search_zettel() {
 	fi
 	# shellcheck disable=SC2001
 	QUERY=$(sed -e 's/\s\+/|/g' <<<"$*")
-	git grep -i --name-only -E "$QUERY" | grep -o -E '[0-9]{14}'
+	git grep -i --name-only -E "$QUERY" | grep -o -E '[0-9]{14}' | sort | uniq
 }
 
 parse_zet_list() {

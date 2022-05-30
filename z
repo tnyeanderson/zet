@@ -6,14 +6,17 @@
 
 IFS= read -rd '' USAGE <<EOF
 
+Zettel helper script.
+
 Usage:
 
-    ${0} h|help              : Show this help screen
-    ${0} c|create TITLE...   : Create a new zettel
-    ${0} e|edit   QUERY...   : Search for a zettel and edit it
-    ${0} p|print  QUERY...   : Search for a zettel and print it
-    ${0} s|search QUERY...   : Print IDs and titles of zettels matching QUERY
-    ${0} s|view   QUERY...   : Search for a zettel and view it
+    z h|help              : Show this help screen
+    z c|create TITLE...   : Create a new zettel
+    z e|edit   QUERY...   : Search for a zettel and edit it
+    z p|print  QUERY...   : Search for a zettel and print it
+    z push                : Push changes to github
+    z s|search QUERY...   : Print IDs and titles of zettels matching QUERY
+    z v|view   QUERY...   : Search for a zettel and view it
 
 EOF
 
@@ -54,6 +57,10 @@ cmd_print() {
 	print_zettel "$SELECTED_ZET"
 	echo
 	echo "Zettel: $SELECTED_ZET"
+}
+
+cmd_push() {
+	git push
 }
 
 cmd_view() {
@@ -215,6 +222,9 @@ main() {
 		;;
 	p | print)
 		cmd_print "$@"
+		;;
+	push)
+		cmd_push
 		;;
 	u | url)
 		cmd_url "$@"

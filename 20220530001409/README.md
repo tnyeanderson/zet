@@ -17,6 +17,6 @@ Or use the special `%` register using the `@` accessor:
 
 ## Related
 
-* `:help cdline-special`
+* `:help cmdline-special`
 
     #vim #tips #scripts

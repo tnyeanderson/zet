@@ -13,7 +13,7 @@ normal 4l
 To move to the right `x` number of characters:
 ```vim
 let x = 4
-execute "normal" . x . "l"
+execute "normal " . x . "l"
 ```
 
 > Remember, dots are used for concatentation in vim

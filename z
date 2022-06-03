@@ -133,15 +133,22 @@ select_zet() {
 		SELECTED_ZET=$(awk '{ print $1 }' <<<"${ZET_LIST[0]}")
 		return
 	fi
-	PS3='Select a zet: '
-	select ZET in "${ZET_LIST[@]}"; do
-		SELECTED_ZET=$(awk '{ print $1 }' <<<"$ZET")
-		break
-	done
+	selector
 	if [[ -z "$SELECTED_ZET" ]]; then
 		echo "No zet selected"
 		exit 1
 	fi
+}
+
+selector() {
+	num=1
+	for ITEM in "${ZET_LIST[@]}"; do
+		echo "${num}) $ITEM"
+		((num++))
+	done
+	read -rp 'Select a zet: ' ZET_NUM
+	((ZET_NUM--))
+	SELECTED_ZET=$(awk '{ print $1 }' <<<"${ZET_LIST[$ZET_NUM]}")
 }
 
 get_title_from_file() {

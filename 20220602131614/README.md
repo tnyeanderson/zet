@@ -8,7 +8,7 @@ This function is **not** idempotent:
 let sum = 0
 
 function increment(amount) {
-	sum = sum + amount
+  sum = sum + amount
   return sum
 }
 ```

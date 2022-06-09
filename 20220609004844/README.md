@@ -1,8 +1,8 @@
 # Convert struct to JSON and vice versa
 
 To convert a `struct` to JSON data, the structs properties **must be exported (public)!**
-In the following example, `prop3` can never be marshaled (converted from JSON) or
-unmarshaled (converted to JSON) since it is not an exported (capitalized) property:
+In the following example, `prop3` can never be marshaled (converted to JSON) or
+unmarshaled (converted from JSON) since it is not an exported (capitalized) property:
 ```go
 type MyStruct struct {
   Prop1 string

@@ -16,6 +16,7 @@ Usage:
     z p|print  QUERY...   : Search for a zettel and print it
     z push                : Push changes to github
     z s|search QUERY...   : Print IDs and titles of zettels matching QUERY
+		z u|url    QUERY...   : Search for a zettel and print its github url
     z v|view   QUERY...   : Search for a zettel and view it
 
 EOF

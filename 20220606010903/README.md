@@ -5,15 +5,15 @@ To wrap text at 72 characters when typing in insert mode:
 set textwidth=72
 ```
 
-To re-wrap text that has already been typed, visually select it and type `gw`.
+To re-wrap text that has already been typed, visually select it and type `gq`.
 So to do the whole document:
 ```vim
-ggvGgw
+ggvGgq
 ```
 
 Or use motion:
 ```vim
-gggwG
+gggqG
 ```
 
 > NOTE: `gq` and `gw` both do the same thing and and can act visually or with

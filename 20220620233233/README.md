@@ -29,7 +29,7 @@ Create go stubs in the current directory (and format `api/swagger.yaml`):
 swagger-codegen -l go-server -i api/swagger.yaml
 
 # openapi-generator equivalent
-openapi-generator -g go-server -i api/openapi.yaml
+openapi-generator generate -g go-server -i api/openapi.yaml
 ```
 
 Convert v2 to v3:

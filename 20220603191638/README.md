@@ -7,7 +7,7 @@ botright 10new | read !ls -al
 
 Explanation:
 * `botright` - open the new window on the bottom of the screen, full width
-*  `10new` - create a new horizontally split window that is 10 lines tall
+* `10new` - create a new horizontally split window that is 10 lines tall
 * `|` - like a semicolon, just run the next command after the first
 * `read` - insert the given file under the cursor in the new window
 * `!ls -al` - the command output which is passed as a file to `read`

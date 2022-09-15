@@ -49,7 +49,6 @@ ln -sfn src target
 # .
 # ├── src
 # └── target -> src
-# └── target -> src
 ```
 
 Therefore, for a truly idempotent and repeatable `ln` command, always use:

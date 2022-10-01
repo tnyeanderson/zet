@@ -4,7 +4,7 @@ To get Github style hightlighting of differences (specifically changed
 words/phrases being highlighted or "word by word" differences), first
 find the `diff-highlight` binary that is included with git:
 ```bash
-find /usr -type f -name diff-hightlight
+find /usr -type f -name diff-highlight
 ```
 
 Then take that binary and add it to the `.gitconfig` either at the

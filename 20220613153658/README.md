@@ -14,6 +14,12 @@ project or global level:
   diff = /usr/share/git/diff-highlight/diff-highlight | less
 ```
 
+If the `diff-highlight` script is not executable, use perl:
+```conf
+[pager]
+  diff = perl /usr/share/git/diff-highlight/diff-highlight | less
+```
+
 > NOTE: Along with the `diff` option, the `log` and `show` pagers can be
 > set here as well.
 

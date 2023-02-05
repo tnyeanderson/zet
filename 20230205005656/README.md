@@ -49,20 +49,20 @@ var xmltest = []byte(`<?xml version="1.0"?>
   <mapelement>
     <item1>
       <itemprop>
-				<value>hello</value>
+        <value>hello</value>
       </itemprop>
       <itemprop>
-				<value>goodbye</value>
+        <value>goodbye</value>
       </itemprop>
-		</item1>
-		<item2>
+    </item1>
+    <item2>
       <itemprop>
-				<value>hola</value>
+        <value>hola</value>
       </itemprop>
       <itemprop>
-				<value>adios</value>
+        <value>adios</value>
       </itemprop>
-		</item2>
+    </item2>
   </mapelement>
 </rootelement>
 `)

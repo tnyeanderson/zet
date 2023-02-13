@@ -1,0 +1,48 @@
+[
+    {
+        "id": 3901,
+        "name": "Badakhshan",
+        "state_code": "BDS",
+        "latitude": "36.73477250",
+        "longitude": "70.81199530",
+        "country_id": 1,
+        "cities": [
+            {
+                "id": 52,
+                "name": "Ashkāsham",
+                "latitude": "36.68333000",
+                "longitude": "71.53333000"
+            },
+            {
+                "id": 68,
+                "name": "Fayzabad",
+                "latitude": "37.11664000",
+                "longitude": "70.58002000"
+            },
+            {
+                "id": 78,
+                "name": "Jurm",
+                "latitude": "36.86477000",
+                "longitude": "70.83421000"
+            },
+            {
+                "id": 84,
+                "name": "Khandūd",
+                "latitude": "36.95127000",
+                "longitude": "72.31800000"
+            },
+            {
+                "id": 115,
+                "name": "Rāghistān",
+                "latitude": "37.66079000",
+                "longitude": "70.67346000"
+            },
+            {
+                "id": 131,
+                "name": "Wākhān",
+                "latitude": "37.05710000",
+                "longitude": "73.34928000"
+            }
+        ]
+    }
+]

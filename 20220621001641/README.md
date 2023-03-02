@@ -1,5 +1,23 @@
 # Using local versions of go modules
 
+## The right way
+
+Since writing this zet, I realized how dumb I was. The correct answer to this
+is to use go workspaces. For example:
+
+```
+go work init
+go work use .
+go work use ./gin
+go work use ../otherpackage
+```
+
+Done. Much Better. But see the original content of the zet below if you dare...
+
+## The wrong way
+
+> WARNING: This is stupid, don't do it. Use workspaces.
+
 Sometimes a remote module needs to be loaded locally from a directory. For
 instance, when testing potential upstream changes to a dependency of your
 project.

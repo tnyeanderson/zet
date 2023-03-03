@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("There should be nothing printed after this due to a crash!")
+	fmt.Println("There should be nothing printed after this!")
 
 	// noop is an empty executable file
 	args := []string{"./noop"}

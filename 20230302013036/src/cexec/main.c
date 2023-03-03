@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 int main() {
-	printf("There should be nothing printed after this due to a crash!\n");
+	printf("There should be nothing printed after this!\n");
 
 	// noop is an empty executable file
 	char* a[] = {"./noop", NULL};

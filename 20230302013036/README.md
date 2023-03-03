@@ -1,9 +1,10 @@
 # Difference between execvp in C and unix.Exec in Go
 
 When a C program calls `execvp()` on an executable file which has no content,
-the calling application crashes. However, when an empty executable file is
-called with `unix.Exec()` in golang, *the calling application continues as if
-nothing happened!*
+the calling application performs the no-op and, since the PID is replaced by
+the no-op program, the application exits after the `execvp()` call. However,
+when an empty executable file is called with `unix.Exec()` in golang, *the
+calling application continues as if nothing happened!*
 
 See the contained `src` directory for a demonstration, or see the results below.
 
@@ -13,7 +14,7 @@ See the contained `src` directory for a demonstration, or see the results below.
 #include <unistd.h>
 
 int main() {
-  printf("There should be nothing printed after this due to a crash!\n");
+  printf("There should be nothing printed after this!\n");
 
   // noop is an empty executable file
   char* a[] = {"./noop", NULL};
@@ -26,7 +27,7 @@ int main() {
 Output:
 ```
 $ (cd cexec && ./test)
-There should be nothing printed after this due to a crash!
+There should be nothing printed after this!
 ```
 
 `goexec/main.go`:
@@ -41,7 +42,7 @@ import (
 )
 
 func main() {
-  fmt.Println("There should be nothing printed after this due to a crash!")
+  fmt.Println("There should be nothing printed after this!")
 
   // noop is an empty executable file
   args := []string{"./noop"}
@@ -54,7 +55,7 @@ func main() {
 Output:
 ```
 $ (cd goexec && ./test)
-There should be nothing printed after this due to a crash!
+There should be nothing printed after this!
 This line should not be printed after noop!
 ```
 

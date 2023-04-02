@@ -27,7 +27,8 @@ and put them in the `downloads/4.10.0` directory of this zet.
 > NOTE: I do not own the copyright to these files, I am only providing a
 personal backup copy of the software Dell has publicly distributed.
 
-To use it on Ubuntu Server 18.04 (for example):
+To use it on Ubuntu Server 18.04 (which is recommended as the old libssl
+dependency is not available on Ubuntu 22):
 
 1. Download the `.tar.gz` file from either the KB article, links above, or the
    `downloads` directory of this zet

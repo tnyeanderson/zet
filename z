@@ -18,6 +18,7 @@ Usage:
     z s|search QUERY...   : Print IDs and titles of zettels matching QUERY
 		z u|url    QUERY...   : Search for a zettel and print its github url
     z v|view   QUERY...   : Search for a zettel and view it
+    z id       QUERY...   : Search for a zettel and display its ID
 
 EOF
 
@@ -68,6 +69,12 @@ cmd_view() {
 	parse_zet_list < <(search_zettel "$@")
 	select_zet
 	view_zettel "$SELECTED_ZET"
+}
+
+cmd_id() {
+	parse_zet_list < <(search_zettel "$@")
+	select_zet
+	echo "$SELECTED_ZET"
 }
 
 cmd_url() {
@@ -144,7 +151,7 @@ select_zet() {
 selector() {
 	num=1
 	for ITEM in "${ZET_LIST[@]}"; do
-		echo "${num}) $ITEM"
+		echo "${num}) $ITEM" >&2
 		((num++))
 	done
 	read -rp 'Select a zet: ' ZET_NUM
@@ -239,6 +246,9 @@ main() {
 		;;
 	v | view)
 		cmd_view "$@"
+		;;
+	id)
+		cmd_id "$@"
 		;;
 	h | help)
 		show_usage

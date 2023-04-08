@@ -6,11 +6,12 @@ annoyingly difficult to find the download links for the different releases and
 platforms.
 
 After searching forever, I finally found a [random stackoverflow
-answer](https://superuser.com/a/1648187) which has the KB article which
-*actually lists the download links*. Most others force you to "choose a
-compatible device", but of course I don't know which device to pick to get the
-latest Ubuntu release of the software, since my hardware is rather old and only
-gives the Windows versions (Optiplex 7040).
+answer](https://superuser.com/a/1648187) which links to the [KB
+article](https://www.dell.com/support/kbdoc/en-us/000178000/dell-command-configure)
+which *actually lists the download links*. Most others force you to "choose
+a compatible device", but of course I don't know which device to pick to get
+the latest Ubuntu release of the software, since my hardware is rather old and
+only gives the Windows versions (Optiplex 7040).
 
 Below are the links for version `4.10.0`, released January 2023:
 

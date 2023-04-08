@@ -65,9 +65,10 @@ up](https://www.dell.com/community/Linux-Developer-Systems/Dell-Command-Configur
 other parts of the system.
 
 [This forum post](https://bbs.archlinux.org/viewtopic.php?id=280992) explains
-the remedy. In summary:
+the remedy. In summary, to use `cctk` on Ubuntu 22:
 
-1. Install 4.8.0 using the same method as above
+1. Install the Ubuntu 20 version of the 4.8.0 package using the same method as
+   above
 2. Get rid of the extra config created by Dell
    ```bash
    mv /etc/ld.so.conf.d/hapiintfdcc.conf /etc/ld.so.conf.d/hapiintfdcc.conf.bak

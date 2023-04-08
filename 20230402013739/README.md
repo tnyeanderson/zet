@@ -23,7 +23,8 @@ Below are the links for version `4.10.0`, released January 2023:
 - [RHEL 8.0 (64-bit)](https://www.dell.com/support/home/en-us/drivers/DriversDetails?driverId=7FXYJ)
 
 Because I don't trust Dell to keep these available, I've downloaded them all
-and put them in the `downloads/4.10.0` directory of this zet.
+and put them in the `downloads/4.10.0` and `downloads/4.8.0` directories of
+this zet.
 
 > NOTE: I do not own the copyright to these files, I am only providing a
 personal backup copy of the software Dell has publicly distributed.
@@ -56,6 +57,25 @@ Import a previously exported configuration:
 ```bash
 /opt/dell/dcc/cctk -I mybios.conf
 ```
+
+Ubuntu 22 cannot use version 4.10.0 to a libssl1.1 dependency. Version 4.8.0
+embeds its libssl dependency in the /opt/dell folder, so it does work on the
+latest Ubuntu 22. However, it can also [screw
+up](https://www.dell.com/community/Linux-Developer-Systems/Dell-Command-Configure-breaks-OpenSSL-and-other-things/m-p/8275666)
+other parts of the system.
+
+[This forum post](https://bbs.archlinux.org/viewtopic.php?id=280992) explains
+the remedy. In summary:
+
+1. Install 4.8.0 using the same method as above
+2. Get rid of the extra config created by Dell
+   ```bash
+   mv /etc/ld.so.conf.d/hapiintfdcc.conf /etc/ld.so.conf.d/hapiintfdcc.conf.bak
+   ```
+3. Reconfigure shared library paths
+   ```bash
+   ldconfig
+   ```
 
 I really wish Dell would make this stuff easy to find. I literally spent a week
 looking for those download links and had given up, only to stumble the KB

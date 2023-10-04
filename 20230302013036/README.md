@@ -32,7 +32,6 @@ There should be nothing printed after this!
 
 `goexec/main.go`:
 ```go
-$ cat goexec/main.go
 package main
 
 import (

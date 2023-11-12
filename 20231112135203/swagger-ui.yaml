@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swagger-ui
+  labels:
+    app: swagger-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swagger-ui
+  template:
+    metadata:
+      labels:
+        app: swagger-ui
+    spec:
+      containers:
+      - name: swagger-ui
+        image: swaggerapi/swagger-ui
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /app
+          name: spec
+          readOnly: true
+      initContainers:
+      - name: fetch-spec
+        image: bitnami/kubectl
+        command:
+        - "bash"
+        - "-c"
+        - "kubectl get --raw /openapi/v2 >/app/swagger.json"
+        volumeMounts:
+        - mountPath: /app
+          name: spec
+      volumes:
+      - name: spec
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: swagger-ui
+spec:
+  selector:
+    app: swagger-ui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: swagger-ui
+#spec:
+#  rules:
+#  - host: my.custom.hostname.tld
+#    http:
+#      paths:
+#      - path: /
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: swagger-ui
+#            port:
+#              number: 80

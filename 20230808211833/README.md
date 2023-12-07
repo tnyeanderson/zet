@@ -13,7 +13,7 @@ an image:
    will not actually free any disk space:
 
    ```bash
-   curl -X DELETE https://registry.galaxy.sc/v2/i/frigate/manifests/sha256:abcde1234
+   curl -X DELETE https://my.registry.local/v2/myproject/myrepo/manifests/sha256:abcde1234
    ```
 
 4. `exec` into the container and free the disk space by running:

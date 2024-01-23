@@ -11,7 +11,13 @@ Let's say you want to do this on Windows (in Powershell). This is, of course,
 needlessly and frustratingly complicated:
 
 ```
-Get-ChildItem -Path Env: | Where-Object { $_.Name -like "*proxy*" }
+Get-ChildItem -Path Env: | Select-String proxy
+```
+
+Which can luckily be shortened to:
+
+```
+gci Env: | sls proxy
 ```
 
     #windows #why #powershell #env

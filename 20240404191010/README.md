@@ -11,7 +11,7 @@ will initialize it if necessary for unmarshalling the provided data.
 The package docs indicate that nested structs/maps will only be initialized
 once (and only if "necessary"). What are the implications of this?
 
-The following statements are true at any level of nesting:
+The following statements are true at any level of nesting, bearing in mind #14:
 
 1.  If a pointer within a struct was previously initialized (e.g. by a previous
     unmarshaling), its address will never change from subsequent unmarshaling,

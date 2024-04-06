@@ -9,12 +9,15 @@ import (
 )
 
 type Q struct {
-	String      string
-	StringMap   map[string]string
-	QMap        map[string]Q
-	QMapPointer map[string]*Q
-	R           R
-	QPointer    *Q
+	String        string
+	StringSlice   []string
+	StringMap     map[string]string
+	QMap          map[string]Q
+	QMapPointer   map[string]*Q
+	QSlice        []Q
+	QSlicePointer []*Q
+	R             R
+	QPointer      *Q
 }
 
 type R struct {
@@ -738,5 +741,215 @@ qpointer:
 
 	if q.QPointer.QMap["q1"].String != "v2" {
 		t.Fatalf("incorrect value")
+	}
+}
+
+func Test14_Primitive(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+stringslice:
+- v1
+- v2
+- v3
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.StringSlice)
+
+	if err := yaml.Unmarshal([]byte(`---
+stringslice:
+- v4
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.StringSlice)
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	expected := []string{
+		"v4",
+	}
+
+	if diff := deep.Equal(q.StringSlice, expected); diff != nil {
+		t.Fatal(diff)
+	}
+}
+
+func Test14Nested_Primitive(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  stringslice:
+  - v1
+  - v2
+  - v3
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.QPointer.StringSlice)
+
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  stringslice:
+  - v4
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.QPointer.StringSlice)
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	expected := []string{
+		"v4",
+	}
+
+	if diff := deep.Equal(q.QPointer.StringSlice, expected); diff != nil {
+		t.Fatal(diff)
+	}
+}
+
+func Test14_Struct(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qslice:
+- string: v1
+- string: v2
+- string: v3
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.QSlice)
+
+	if err := yaml.Unmarshal([]byte(`---
+qslice:
+- string: v4
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.QSlice)
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	expected := []Q{
+		Q{String: "v4"},
+	}
+
+	if diff := deep.Equal(q.QSlice, expected); diff != nil {
+		t.Fatal(diff)
+	}
+}
+
+func Test14Nested_Struct(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qslice:
+  - string: v1
+  - string: v2
+  - string: v3
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.QPointer.QSlice)
+
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qslice:
+  - string: v4
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.QPointer.QSlice)
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	expected := []Q{
+		Q{String: "v4"},
+	}
+
+	if diff := deep.Equal(q.QPointer.QSlice, expected); diff != nil {
+		t.Fatal(diff)
+	}
+}
+
+func Test14_Pointer(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qslicepointer:
+- string: v1
+- string: v2
+- string: v3
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.QSlicePointer)
+
+	if err := yaml.Unmarshal([]byte(`---
+qslicepointer:
+- string: v4
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.QSlicePointer)
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	expected := []*Q{
+		&Q{String: "v4"},
+	}
+
+	if diff := deep.Equal(q.QSlicePointer, expected); diff != nil {
+		t.Fatal(diff)
+	}
+}
+
+func Test14Nested_Pointer(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qslicepointer:
+  - string: v1
+  - string: v2
+  - string: v3
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.QPointer.QSlicePointer)
+
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qslicepointer:
+  - string: v4
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.QPointer.QSlicePointer)
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	expected := []*Q{
+		&Q{String: "v4"},
+	}
+
+	if diff := deep.Equal(q.QPointer.QSlicePointer, expected); diff != nil {
+		t.Fatal(diff)
 	}
 }

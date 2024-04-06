@@ -53,6 +53,8 @@ The following statements are true at any level of nesting:
 13. If the existing value of a map is a struct, that struct will be updated
     in-place with any values set in the YAML.
 
+14. Slices will always be replaced with the new slice if present in the YAML. 
+
 All of the above points are demonstrated by the `yamlupdate` package
 [embedded](./yamlupdate) in this zet.
 
@@ -61,61 +63,7 @@ demonstration of the expected behavior. A test with an added layer of nesting
 is available for each as well. To run the tests:
 
 ```bash
-$ go test -v .
-=== RUN   Test1
---- PASS: Test1 (0.00s)
-=== RUN   Test1Nested
---- PASS: Test1Nested (0.00s)
-=== RUN   Test2
---- PASS: Test2 (0.00s)
-=== RUN   Test2Nested
---- PASS: Test2Nested (0.00s)
-=== RUN   Test3
---- PASS: Test3 (0.00s)
-=== RUN   Test3Nested
---- PASS: Test3Nested (0.00s)
-=== RUN   Test4
---- PASS: Test4 (0.00s)
-=== RUN   Test4Nested
---- PASS: Test4Nested (0.00s)
-=== RUN   Test5
---- PASS: Test5 (0.00s)
-=== RUN   Test5Nested
---- PASS: Test5Nested (0.00s)
-=== RUN   Test6
---- PASS: Test6 (0.00s)
-=== RUN   Test6Nested
---- PASS: Test6Nested (0.00s)
-=== RUN   Test7
---- PASS: Test7 (0.00s)
-=== RUN   Test7Nested
---- PASS: Test7Nested (0.00s)
-=== RUN   Test8
---- PASS: Test8 (0.00s)
-=== RUN   Test8Nested
---- PASS: Test8Nested (0.00s)
-=== RUN   Test9
---- PASS: Test9 (0.00s)
-=== RUN   Test9Nested
---- PASS: Test9Nested (0.00s)
-=== RUN   Test10
---- PASS: Test10 (0.00s)
-=== RUN   Test10Nested
---- PASS: Test10Nested (0.00s)
-=== RUN   Test11
---- PASS: Test11 (0.00s)
-=== RUN   Test11Nested
---- PASS: Test11Nested (0.00s)
-=== RUN   Test12
---- PASS: Test12 (0.00s)
-=== RUN   Test12Nested
---- PASS: Test12Nested (0.00s)
-=== RUN   Test13
---- PASS: Test13 (0.00s)
-=== RUN   Test13Nested
---- PASS: Test13Nested (0.00s)
-PASS
-ok  	yamlupdate	0.003s
+go test -v .
 ```
 
     #go #yaml #tip

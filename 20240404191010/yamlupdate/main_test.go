@@ -612,3 +612,131 @@ qpointer:
 		t.Fatalf("expected map to be initialized")
 	}
 }
+
+func Test12(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qmappointer:
+  q1:
+    string: v1
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.QMapPointer["q1"])
+
+	if err := yaml.Unmarshal([]byte(`---
+qmappointer:
+  q1:
+    string: v2
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.QMapPointer["q1"])
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	if q.QMapPointer["q1"].String != "v2" {
+		t.Fatalf("incorrect value")
+	}
+}
+
+func Test12Nested(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qmappointer:
+    q1:
+      string: v1
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	addr := fmt.Sprintf("%p", q.QPointer.QMapPointer["q1"])
+
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qmappointer:
+    q1:
+      string: v2
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	newAddr := fmt.Sprintf("%p", q.QPointer.QMapPointer["q1"])
+	if addr == newAddr {
+		t.Fatalf("pointers should not match: %s", addr)
+	}
+
+	if q.QPointer.QMapPointer["q1"].String != "v2" {
+		t.Fatalf("incorrect value")
+	}
+}
+
+func Test13(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qmap:
+  q1:
+    string: v1
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	v := q.QMap["q1"]
+	addr := fmt.Sprintf("%p", &v)
+
+	if err := yaml.Unmarshal([]byte(`---
+qmap:
+  q1:
+    string: v2
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	v = q.QMap["q1"]
+	newAddr := fmt.Sprintf("%p", &v)
+	if addr != newAddr {
+		t.Fatalf("pointers don't match: %s %s", addr, newAddr)
+	}
+
+	if q.QMap["q1"].String != "v2" {
+		t.Fatalf("incorrect value")
+	}
+}
+
+func Test13Nested(t *testing.T) {
+	q := &Q{}
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qmap:
+    q1:
+      string: v1
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	v := q.QPointer.QMap["q1"]
+	addr := fmt.Sprintf("%p", &v)
+
+	if err := yaml.Unmarshal([]byte(`---
+qpointer:
+  qmap:
+    q1:
+      string: v2
+`), q); err != nil {
+		t.Fatal(err)
+	}
+
+	v = q.QPointer.QMap["q1"]
+	newAddr := fmt.Sprintf("%p", &v)
+	if addr != newAddr {
+		t.Fatalf("pointers don't match: %s %s", addr, newAddr)
+	}
+
+	if q.QPointer.QMap["q1"].String != "v2" {
+		t.Fatalf("incorrect value")
+	}
+}

@@ -45,6 +45,14 @@ The following statements are true at any level of nesting:
 11. Map fields in structs will be initialized even if set to an empty object in
     the YAML.
 
+12. If the existing value of a map is a pointer to a struct and the same key
+    exists in the YAML, a new struct will be initialized and the pointer will
+    be changed. This is probably the least intuitive item in this list,
+    especially when contrasted with #1 and #13.
+
+13. If the existing value of a map is a struct, that struct will be updated
+    in-place with any values set in the YAML.
+
 All of the above points are demonstrated by the `yamlupdate` package
 [embedded](./yamlupdate) in this zet.
 
@@ -98,6 +106,14 @@ $ go test -v .
 --- PASS: Test11 (0.00s)
 === RUN   Test11Nested
 --- PASS: Test11Nested (0.00s)
+=== RUN   Test12
+--- PASS: Test12 (0.00s)
+=== RUN   Test12Nested
+--- PASS: Test12Nested (0.00s)
+=== RUN   Test13
+--- PASS: Test13 (0.00s)
+=== RUN   Test13Nested
+--- PASS: Test13Nested (0.00s)
 PASS
 ok  	yamlupdate	0.003s
 ```

@@ -13,4 +13,9 @@ the link below:
 
 <https://pubs.opengroup.org/onlinepubs/9699919799/nframe.html>
 
+Also see the GNU extension to the standard, which adds "long options" (e.g.
+`--option value`):
+
+<https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html>
+
     #posix #unix #standards #cli

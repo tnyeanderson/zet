@@ -50,7 +50,11 @@ func (r repeatRemover) Read(b []byte) (int, error) {
 	bytesRead := 0
 	buf := make([]byte, 1)
 	for bytesRead < maxBytes {
-		if _, err := r.reader.Read(buf); err != nil {
+		if n, err := r.reader.Read(buf); err != nil {
+			if n == 1 {
+				b[bytesRead] = buf[0]
+				bytesRead++
+			}
 			return bytesRead, err
 		}
 		in := buf[0]

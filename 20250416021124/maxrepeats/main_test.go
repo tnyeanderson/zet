@@ -39,6 +39,19 @@ func TestRemoveRepeatsWithReader(t *testing.T) {
 	}
 }
 
+func TestRemoveRepeatsWithReader_NoOp(t *testing.T) {
+	expected := "this text doesn't contain any repeats that would match"
+	reader := bytes.NewReader([]byte(expected))
+	r := newRepeatRemover(reader, 'a', 3)
+	b, err := io.ReadAll(r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(b) != expected {
+		t.Fatal()
+	}
+}
+
 func TestRemoveRepeatsWithRegex_LoremIpsum(t *testing.T) {
 	b := removeRepeatsWithRegex(loremipsum, 'l', 1)
 	// There are 31 times that "ll" appears in the text

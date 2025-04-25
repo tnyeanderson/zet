@@ -34,6 +34,12 @@ After installing `pass`, initialize a new store:
 pass init YOURGPGKEYID
 ```
 
+You might consider reloading your `gpg-agent` config:
+
+```sh
+gpg-connect-agent reloadagent /bye
+```
+
 If you set a passphrase on your key, you need to cache it in the `gpg-agent` so
 you aren't prompted. Try decrypting something in your store (you can tab
 complete the secret path):

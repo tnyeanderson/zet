@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e
+
+function parseopts() {
+	declare -n flagsname=$1 argsname=$2
+	shift 2
+	# I wouldn't use an associative array like this normally--it's just to ease testing
+	declare -a args=()
+	while [[ "$#" -gt 0 ]]; do
+		# Guideline 5: multiple short options after a hyphen: -abc
+		parts=()
+		if [[ "$1" =~ ^-[^-] ]]; then
+			for ((i = 1; i < ${#1}; i++)); do
+				parts+=("-${1:$i:1}")
+			done
+		else
+			parts=("$1")
+		fi
+
+		for part in "${parts[@]}"; do
+			case "$part" in
+			-a | --apple | -b | --charlie)
+				# Requires a value
+				flagsname["$part"]=$2
+				shift
+				break
+				;;
+			--another-flag | -f | -x | -z)
+				# Boolean/switch
+				# shellcheck disable=SC2034
+				flagsname["$part"]=true
+				;;
+			--)
+				# Guideline 10: all args after -- are positional
+				# Use shift here first if you don't want the -- itself included
+				args+=("$@")
+				break 2
+				;;
+			-*)
+				echo "unknown flag: $1"
+				exit 1
+				;;
+			*)
+				args+=("$1")
+				;;
+			esac
+		done
+		shift || true
+	done
+	# shellcheck disable=SC2034
+	argsname=("${args[@]}")
+}

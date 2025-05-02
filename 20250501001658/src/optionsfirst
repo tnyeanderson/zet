@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# usage: optionsfirst OPTSTR ARRAYNAME ARGS...
+#
+# optionsfirst sets the values in the array variable named ARRAYNAME to the
+# provided ARGS, starting with all options (e.g. flags) and their values (if
+# applicable) first, followed by the positional arguments. OPTSTR is a
+# colon-delimited list of flags which require a value (e.g. those that would
+# have an OPTARG in getopts). ARRAYNAME should be declared before this function
+# is called. If an argumenent with the value "--" is encountered, it and every
+# argument after it will be presented in the original order. If the final
+# argument expects a value, an explicit empty string argument will be added to
+# ensure a positional parameter isn't mistaken for a value.
+function optionsfirst() {
+	local optstr=$1
+	declare -n arrayname=$2
+	shift 2
+	declare -a options
+	declare -a positional
+	local onval
+	local allpos
+	for arg in "$@"; do
+		# Always positional after --
+		if [[ "$allpos" == yes ]]; then
+			positional+=("$arg")
+			continue
+		fi
+
+		# Value for flag
+		if [[ "$onval" == yes ]]; then
+			options+=("$arg")
+			unset onval
+			continue
+		fi
+
+		# On separator
+		if [[ "$arg" == '--' ]]; then
+			positional+=("$arg")
+			allpos=yes
+			continue
+		fi
+
+		# Positional
+		if ! [[ "$arg" =~ ^- ]]; then
+			positional+=("$arg")
+			continue
+		fi
+
+		# Flag
+		options+=("$arg")
+		# shellcheck disable=SC2076
+		if [[ ":$optstr:" =~ ":$arg:" ]]; then
+			onval=yes
+		fi
+	done
+
+	# Last arg expects value
+	if [[ "$onval" == yes ]]; then
+		options+=('')
+	fi
+
+	# shellcheck disable=SC2034
+	arrayname=("${options[@]}" "${positional[@]}")
+}

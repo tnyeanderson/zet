@@ -1,0 +1,130 @@
+#!/bin/bash
+
+set -e
+
+# shellcheck disable=SC1091
+. optionsfirst
+# shellcheck disable=SC1091
+. parseopts
+
+# I normally wouldn't structure my code like this, it's just for easy testing
+declare -a input
+declare -a got
+declare -a expected
+
+declare -A gotflags expectedflags
+declare -a gotargs expectedargs
+
+opts='-a:--apple:-b:--charlie'
+
+function test_all() {
+	test_optionsfirst
+	test_parseopts
+}
+
+function test_optionsfirst() {
+	got=()
+	optionsfirst "$opts" got "${input[@]}"
+	x=$(printf '%s+' "${got[@]}")
+	y=$(printf "%s+" "${expected[@]}")
+	if [[ "$x" != "$y" ]]; then
+		echo "TEST FAILED - WRONG ORDER"
+		echo "input : ${input[*]}"
+		echo "got   : $x"
+		echo "expect: $y"
+		exit 1
+	fi
+}
+
+function test_parseopts() {
+	gotflags=()
+	gotargs=()
+	parseopts gotflags gotargs "${input[@]}"
+
+	x=${#gotflags[@]}
+	y=${#expectedflags[@]}
+	if [[ "$x" != "$y" ]]; then
+		echo "TEST FAILED - WRONG FLAG LENGTH"
+		echo "input : ${input[*]}"
+		echo "got   : $x"
+		echo "expect: $y"
+		exit 1
+	fi
+
+	for flag in "${!expectedflags[@]}"; do
+		x=${gotflags["$flag"]}
+		y=${expectedflags["$flag"]}
+		if [[ "$x" != "$y" ]]; then
+			echo "TEST FAILED - WRONG FLAG VALUE"
+			echo "input : ${input[*]}"
+			echo "key   : $flag"
+			echo "got   : $x"
+			echo "expect: $y"
+			exit 1
+		fi
+	done
+
+	x=$(printf '%s+' "${gotargs[@]}")
+	y=$(printf "%s+" "${expectedargs[@]}")
+	if [[ "$x" != "$y" ]]; then
+		echo "TEST FAILED - WRONG ARGS"
+		echo "input : ${input[*]}"
+		echo "got   : $x"
+		echo "expect: $y"
+		exit 1
+	fi
+}
+
+input=("-a" "aval" "pos1" "-f" "pos with spaces" "--charlie")
+expectedargs=("pos1" "pos with spaces")
+expected=("-a" "aval" "-f" "--charlie" '' "${expectedargs[@]}")
+expectedflags=(['-a']=aval ['-f']=true ['--charlie']='')
+test_all
+
+input=("-a" "aval" "pos1" "-f" "pos with spaces" "--charlie")
+expectedargs=("pos1" "pos with spaces")
+expected=("-a" "aval" "-f" "--charlie" '' "${expectedargs[@]}")
+expectedflags=(['-a']=aval ['-f']=true ['--charlie']='')
+test_all
+
+input=("-z" "pos1" "-x" "--" "-f" "pos with spaces" "--charlie")
+expectedargs=("pos1" "--" "-f" "pos with spaces" "--charlie")
+expected=("-z" "-x" "${expectedargs[@]}")
+expectedflags=(['-z']=true ['-x']=true)
+test_all
+
+input=("-a")
+expectedargs=()
+expected=("-a" "")
+expectedflags=(['-a']='')
+test_all
+
+input=("pos")
+expectedargs=("pos")
+expected=("pos")
+expectedflags=()
+test_all
+
+input=("pos" "" "-a" "")
+expectedargs=("pos" "")
+expected=("-a" "" "${expectedargs[@]}")
+expectedflags=(['-a']='')
+test_all
+
+input=("pos1" "-a")
+expectedargs=("pos1")
+expected=("-a" "" "${expectedargs[@]}")
+expectedflags=(['-a']='')
+test_all
+
+input=("pos1" "-a" "--another-flag" "pos2")
+expectedargs=("pos1" "pos2")
+expected=("-a" "--another-flag" "${expectedargs[@]}")
+expectedflags=(["-a"]="--another-flag")
+test_all
+
+set -- "${got[@]}"
+if [[ "$(printf '%s+' "${got[@]}")" != "$(printf "%s+" "$@")" ]]; then
+	echo "TEST FAILED"
+	exit 1
+fi

@@ -133,12 +133,12 @@ Maybe that's even less clear, or maybe your brain works like mine :) either way
 that's enough of that!
 
 On to the important stuff: which implementation is easier to understand? Even
-though my first instince was to use recursion, I'd argue the non-recursion
+though my first instinct was to use recursion, I'd argue the non-recursion
 implementation is easier to understand. It works in similar ways, but is easier
 to conceptualize (it iterates forward, and you don't have to "unwind" the
 recursion as it bubbles up). But which is faster?!
 
-Turns out, the non-recursion is also nearly 750x faster!
+Turns out, the non-recursion is also ~7455x faster!
 
 ```txt
 goos: linux

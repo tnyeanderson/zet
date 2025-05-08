@@ -107,9 +107,9 @@ the next die. This can be represented in a table to visualize the iterations:
 | 2    | 2    | 2         | 4   | 1                                    | 0                                 | {2: 1, 3: 2, 4: 1}  | {1: 1, 2: 1}       |
 | -    | -    | -         | -   | -                                    | -                                 | {}                  | {2: 1, 3: 2, 4: 1} |
 
-* More accurately (and VERY importantly), this is the previous occurrences of
-  current key in the `histogram` (column 3). This is what will be added to the
-  occurrences found in the current `results` key.
+\* More accurately (and VERY importantly), this is the previous occurrences of
+current key in the `histogram` (column 3). This is what will be added to the
+occurrences found in the current `results` key.
 
 Another way to think about column 5 above: let's say we've already calculated
 six possible combinations of dice rolls which sum to a value of 10. We could

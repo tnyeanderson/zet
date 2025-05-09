@@ -14,7 +14,7 @@ tocheck if a line contains text, and take an action if it does. This is perfect 
 Therefore:
 ```vim
 " If current line contains 'hello'
-if (getline('.'), 'hello') != -1
+if match(getline('.'), 'hello') != -1
 	doStuff
 fi
 ```
@@ -22,7 +22,7 @@ fi
 Or use regex:
 ```vim
 " If current line starts with 'hello'
-if (getline('.'), '^hello') != -1
+if match(getline('.'), '^hello') != -1
 	doStuff
 fi
 ```
@@ -30,7 +30,7 @@ fi
 Since match returns the index, this could also be written as:
 ```vim
 let line = getline('.')
-if (line, 'hello') == 0
+if match(line, 'hello') == 0
 	doStuff
 fi
 ```

@@ -1,7 +1,7 @@
 # Klipsch ProMedia 2.1 control pod cable repair
 
 The Klipsch ProMedia 2.1 control pod has cables that are not easily replaceable
-by the user because they are wired directly into the PCB using wire-to-boardi
+by the user because they are wired directly into the PCB using wire-to-board
 (WTB) connectors. This includes a standard 3.5mm aux cable and an RS232 cable
 that they use to communicate with the subwoofer's control panel.
 
@@ -18,7 +18,7 @@ My controller pod part number is 1071692, and the part number for the board itse
 54-KO2-53-F1-51 2020.07.08, Klipsch PM2.1 VR PCB REV1.1
 ```
 
-Here are the part numbers for the connecto:
+Here are the part numbers for the connector housings and pins:
 
 | Manufacturer    | Series  | Part number    | Description                                                  |
 |-----------------|---------|----------------|--------------------------------------------------------------|
@@ -52,9 +52,9 @@ mentioned above.
 2.  Remove the four (#1 phillips) screws in the corners of top of the control
     pod. The screws are located underneath the foam.
 3.  Remove the two screws holding the board in place.
-4.  Remove the board by carefully moving it away from the aux ports on the side
-    of the control pod until they are dislodged, then pull up and out of the
-    housing.
+4.  Remove the board by carefully moving it away from the 3.5mm ports on the
+    side of the control pod until they are dislodged, then pull up and out of
+    the housing.
 5.  Unplug the existing cable(s) from the board.
 6.  Note the existing order of wires in the housing. Use a needle to lift the
     white retaining tabs which are holding each of the pins in place within the
